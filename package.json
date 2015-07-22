@@ -1,0 +1,23 @@
+{
+  "name": "cappuccino",
+  "version": "1.0.0",
+  "description": "Cappuccino business intelligent software",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/javadevil/cappuccino.git"
+  },
+  "author": "Wacharabuhm Tungketmukda",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/javadevil/cappuccino/issues"
+  },
+  "homepage": "https://github.com/javadevil/cappuccino#readme",
+  "dependencies": {
+    "express": "^4.13.1",
+    "mongodb": "^2.0.39"
+  }
+}
