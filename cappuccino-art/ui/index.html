@@ -1,26 +1,30 @@
 <html lang="en" ng-app="Cappuccino">
-  <head>
+
+<head>
     <link rel="stylesheet" href="l/angular-material/angular-material.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
     <meta name="viewport" content="initial-scale=1" />
-  </head>
-  <body layout="column" ng-controller="AppCtrl">
-    <md-toolbar layout="row">
-      <div class="md-toolbar-tools">
-        <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
-          <md-icon aria-label="Menu" md-svg-icon="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68133/menu.svg"></md-icon>
-        </md-button>
-        <h1>Hello World</h1>
-      </div>
-    </md-toolbar>
-    <div layout="row" flex>
-        <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
-          
-        </md-sidenav>
-        <div layout="column" flex id="content">
-            <md-content layout="column" flex class="md-padding">
-            	Welcome to Cappuccino
-            </md-content>
+</head>
+
+<body layout="row" ng-controller="AppCtrl">
+    <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+    </md-sidenav>
+    <div layout="column" flex>
+        <md-toolbar layout="row">
+            <div class="md-toolbar-tools">
+                <md-button ng-click="toggleSidenav('left')" class="md-icon-button">
+                    <md-icon aria-label="Menu" md-svg-icon="navigation:ic_menu_24px" ng-show="{{!!title}}"></md-icon>
+                </md-button>
+                <h1>{{title}}</h1>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+        <div layout="row" flex>
+            <div layout="column" flex id="content">
+                <md-content layout="column" flex class="md-padding">
+                	{{profile | json}}
+                </md-content>
+            </div>
         </div>
     </div>
     <!-- Angular Material Dependencies -->
@@ -28,8 +32,8 @@
     <script src="l/angular-animate/angular-animate.min.js"></script>
     <script src="l/angular-aria/angular-aria.min.js"></script>
     <script src="l/angular-material/angular-material.min.js"></script>
-
     <!-- Cappuccino Applications -->
     <script src="applications/cappuccino.js"></script>
-  </body>
+</body>
+
 </html>
