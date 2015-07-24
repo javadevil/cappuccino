@@ -4,7 +4,7 @@
   "description": "Cappuccino business intelligent software",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon .",
+    "start": "nodemon -i cappuccino-art/ .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

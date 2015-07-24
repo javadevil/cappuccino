@@ -8,34 +8,24 @@
 </head>
 
 <body layout="row" ng-controller="AppCtrl">
-    <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="true">
-        <div class="profile-display" layout="column" layout-align="end start">
-            <div class="user-profile md-headline" layout="row">
-                <div layout="column" flex>
-                    <div>{{user.name}}</div>
-                    <div class="md-title">Administrator</div>
-                </div>
-                <div>
-                    <md-menu>
-                        <md-button class="md-icon-button" ng-click="$mdOpenMenu()">
-                            <md-icon aria-label="User preference" style="color:white;" md-svg-icon="navigation:ic_expand_more_24px"></md-icon>
-                        </md-button>
-                        <md-menu-content width="4">
-                            <md-menu-item>
-                                <md-button ng-click="">
-                                    <md-icon md-svg-icon="editor:ic_mode_edit_24px" md-menu-align-target></md-icon>
-                                    Update profile
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button ng-click="logout()">
-                                    <md-icon md-svg-icon="action:ic_settings_power_24px" md-menu-align-target></md-icon>
-                                    Logout
-                                </md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
-                </div>
+    <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+        <div class="profile-display" layout="column" layout-align="end start" ng-show="user">
+            <div class="user-profile" layout="row" layout-align="center center">
+                <div style="padding-left:10px">{{user.name}}</div>
+                <span flex></span>
+                <md-menu>
+                    <md-button class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
+                        <md-icon aria-label="User preference" style="color:white" md-svg-icon="navigation:ic_expand_more_24px"></md-icon>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="logout()">
+                                <md-icon md-svg-icon="action:ic_settings_power_24px" md-menu-align-target></md-icon>
+                                Logout
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </div>
         </div>
     </md-sidenav>

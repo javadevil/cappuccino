@@ -2,7 +2,8 @@ var app = angular.module('Cappuccino', ['ngMaterial']);
 
 app.config(function($mdThemingProvider) {
     $mdThemingProvider.theme("default")
-        .primaryPalette("teal");
+        .primaryPalette("brown")
+        .accentPalette("cyan");
 });
 
 //Iconset config
@@ -36,46 +37,55 @@ app.controller('AppCtrl', ['$scope', '$mdSidenav', '$mdDialog', '$http', functio
     }
     $scope.requestAuthenticate = function() {
         $mdDialog.show({
-            scope: $scope,
             parent: angular.element(document.body),
             templateUrl: 'templates/authenticate/authenticate.dialog.html',
-            controller: 'AuthenticateCtrl'
+            controller: 'AuthenticateCtrl',
+            onRemoving: $scope.getUserProfile
         });
     };
-    $scope.logout = function() {
-        $http.get('/auth/logout')
-            .success(function(data, status, headers, config) {
-                location.reload();
-            })
-            .error(function(data, status, headers, config) {
-                
-            })
-    }
-    $scope.init = function() {
-        $http.get('/auth')
+    $scope.getUserProfile = function(){
+    	$http.get('/auth')
             .success(function(data, status, headers, config) {
                 $scope.user = data;
             })
             .error(function(data, status, headers, config) {
                 $scope.requestAuthenticate();
+            });
+    }
+
+    $scope.openMenu = function($mdOpenMenu, ev) {
+        console.log(ev);
+        originatorEv = ev;
+        $mdOpenMenu(ev);
+    };
+
+    $scope.logout = function() {
+        $http.get('/auth/logout')
+            .success(function(data, status, headers, config) {
+                $scope.requestAuthenticate();
+                $scope.user = false;
+            })
+            .error(function(data, status, headers, config) {
+
             })
     }
-    angular.element(document).ready($scope.init);
+
+    angular.element(document).ready($scope.getUserProfile);
 }]);
 
 app.controller('AuthenticateCtrl', ['$scope', '$mdDialog', '$http', function($scope, $mdDialog, $http) {
-    $scope.pending = false;
+
     $scope.authenticate = function() {
         $scope.pending = true;
         $http.post('/auth/login', $scope.user)
             .success(function(data, status, headers, config) {
-                $scope.user = data;
                 $scope.pending = false;
                 $mdDialog.hide();
             })
             .error(function(data, status, headers, config) {
                 $scope.errText = data.message;
                 $scope.pending = false;
+                $scope.user.password = '';
             })
     }
 
