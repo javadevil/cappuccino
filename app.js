@@ -24,6 +24,10 @@ MongoClient.connect(config.database.url, function(err, db) {
         next();
     });
 
+    var bodyParser = require('body-parser');
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: false }));
+    
     config.applications.map(function(appData) {
         var router = require(appData.require)();
 
@@ -32,6 +36,18 @@ MongoClient.connect(config.database.url, function(err, db) {
         } else {
             app.use(router);
         }
+    })
+
+    app.use(function(err,req,res,next){
+        if (res.statusCode === 200) {
+            res.status(500);
+        }
+        
+        res.json({
+            error:err.name,
+            message: err.message,
+            timestamp: new Date().getTime()
+        })
     })
     if (config.http.enabled) {
         http.createServer(app).listen(config.http.port, function() {

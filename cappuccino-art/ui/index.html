@@ -1,13 +1,43 @@
 <html lang="en" ng-app="Cappuccino">
 
 <head>
-    <link rel="stylesheet" href="l/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="/l/angular-material/angular-material.min.css">
+    <link rel="stylesheet" href="/decor/cappuccino.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
     <meta name="viewport" content="initial-scale=1" />
 </head>
 
 <body layout="row" ng-controller="AppCtrl">
-    <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+    <md-sidenav layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="true">
+        <div class="profile-display" layout="column" layout-align="end start">
+            <div class="user-profile md-headline" layout="row">
+                <div layout="column" flex>
+                    <div>{{user.name}}</div>
+                    <div class="md-title">Administrator</div>
+                </div>
+                <div>
+                    <md-menu>
+                        <md-button class="md-icon-button" ng-click="$mdOpenMenu()">
+                            <md-icon aria-label="User preference" style="color:white;" md-svg-icon="navigation:ic_expand_more_24px"></md-icon>
+                        </md-button>
+                        <md-menu-content width="4">
+                            <md-menu-item>
+                                <md-button ng-click="">
+                                    <md-icon md-svg-icon="editor:ic_mode_edit_24px" md-menu-align-target></md-icon>
+                                    Update profile
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button ng-click="logout()">
+                                    <md-icon md-svg-icon="action:ic_settings_power_24px" md-menu-align-target></md-icon>
+                                    Logout
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </div>
+            </div>
+        </div>
     </md-sidenav>
     <div layout="column" flex>
         <md-toolbar layout="row">
@@ -22,16 +52,15 @@
         <div layout="row" flex>
             <div layout="column" flex id="content">
                 <md-content layout="column" flex class="md-padding">
-                	{{profile | json}}
                 </md-content>
             </div>
         </div>
     </div>
     <!-- Angular Material Dependencies -->
-    <script src="l/angular/angular.min.js"></script>
-    <script src="l/angular-animate/angular-animate.min.js"></script>
-    <script src="l/angular-aria/angular-aria.min.js"></script>
-    <script src="l/angular-material/angular-material.min.js"></script>
+    <script src="/l/angular/angular.min.js"></script>
+    <script src="/l/angular-animate/angular-animate.min.js"></script>
+    <script src="/l/angular-aria/angular-aria.min.js"></script>
+    <script src="/l/angular-material/angular-material.min.js"></script>
     <!-- Cappuccino Applications -->
     <script src="applications/cappuccino.js"></script>
 </body>

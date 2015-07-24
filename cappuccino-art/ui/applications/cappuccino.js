@@ -1,4 +1,4 @@
-var app = angular.module('Cappuccino',['ngMaterial']);
+var app = angular.module('Cappuccino', ['ngMaterial']);
 
 app.config(function($mdThemingProvider) {
     $mdThemingProvider.theme("default")
@@ -25,30 +25,58 @@ app.config(function($mdIconProvider) {
         .iconSet("toggle", "l/material-design-icons/sprites/svg-sprite/svg-sprite-toggle.svg")
 });
 
-app.controller('AppCtrl', ['$scope','$mdSidenav','$mdDialog',function($scope,$mdSidenav,$mdDialog){
-	$scope.title = "test";
-	$scope.toggleSidenav = function(id){
-		$mdSidenav(id).toggle();
-	};
-	$scope.setTitle = function(title){
-		$scope.title = title;
-	}
-	$scope.requestAuthenticate = function(){
-		$mdDialog.show({
-			scope: $scope,
-			parent: angular.element(document.body),
-			templateUrl:'templates/authenticate/authenticate.dialog.html',
-			controller: 'AuthenticateCtrl'
-		});
-	};
+app.controller('AppCtrl', ['$scope', '$mdSidenav', '$mdDialog', '$http', function($scope, $mdSidenav, $mdDialog, $http) {
+    $scope.title = "Cappuccino";
 
-	$scope.requestAuthenticate();
+    $scope.toggleSidenav = function(id) {
+        $mdSidenav(id).toggle();
+    };
+    $scope.setTitle = function(title) {
+        $scope.title = title;
+    }
+    $scope.requestAuthenticate = function() {
+        $mdDialog.show({
+            scope: $scope,
+            parent: angular.element(document.body),
+            templateUrl: 'templates/authenticate/authenticate.dialog.html',
+            controller: 'AuthenticateCtrl'
+        });
+    };
+    $scope.logout = function() {
+        $http.get('/auth/logout')
+            .success(function(data, status, headers, config) {
+                location.reload();
+            })
+            .error(function(data, status, headers, config) {
+                
+            })
+    }
+    $scope.init = function() {
+        $http.get('/auth')
+            .success(function(data, status, headers, config) {
+                $scope.user = data;
+            })
+            .error(function(data, status, headers, config) {
+                $scope.requestAuthenticate();
+            })
+    }
+    angular.element(document).ready($scope.init);
 }]);
 
-app.controller('AuthenticateCtrl', ['$scope',function($scope){
-	$scope.authenticate = function(){
-		$scope.profile = angular.copy($scope.user);
-		$scope.user = {}
-	}
+app.controller('AuthenticateCtrl', ['$scope', '$mdDialog', '$http', function($scope, $mdDialog, $http) {
+    $scope.pending = false;
+    $scope.authenticate = function() {
+        $scope.pending = true;
+        $http.post('/auth/login', $scope.user)
+            .success(function(data, status, headers, config) {
+                $scope.user = data;
+                $scope.pending = false;
+                $mdDialog.hide();
+            })
+            .error(function(data, status, headers, config) {
+                $scope.errText = data.message;
+                $scope.pending = false;
+            })
+    }
 
 }]);
