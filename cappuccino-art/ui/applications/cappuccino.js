@@ -2,8 +2,7 @@ var app = angular.module('Cappuccino', ['ngMaterial']);
 
 app.config(function($mdThemingProvider) {
     $mdThemingProvider.theme("default")
-        .primaryPalette("brown")
-        .accentPalette("cyan");
+        .primaryPalette("indigo");
 });
 
 //Iconset config
