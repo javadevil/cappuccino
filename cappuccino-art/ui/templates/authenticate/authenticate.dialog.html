@@ -2,7 +2,7 @@
     <form ng-submit="authenticate()">
         <md-dialog-content>
             <div>Enter username and password</div>
-            <md-progress-linear md-mode="indeterminate" ng-show="pending"></md-progress-linear>
+            <md-progress-linear md-mode="indeterminate" ng-show="loading"></md-progress-linear>
             <div ng-show="!!errText" style="color:red;">{{errText}}</div>
             <md-input-container style="margin-top:24px">
                 <label>Username</label>

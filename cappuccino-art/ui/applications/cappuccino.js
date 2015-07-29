@@ -1,4 +1,4 @@
-var app = angular.module('Cappuccino', ['ngMaterial']);
+var app = angular.module('Cappuccino', ['ngMaterial','ngRoute']);
 
 app.config(function($mdThemingProvider) {
     $mdThemingProvider.theme("default")
@@ -25,6 +25,15 @@ app.config(function($mdIconProvider) {
         .iconSet("toggle", "l/material-design-icons/sprites/svg-sprite/svg-sprite-toggle.svg")
 });
 
+app.config(['$routeProvider','$locationProvider',function($routeProvider,$locationProvider){
+    $routeProvider
+    .when('/',{
+        templateUrl: '/templates/welcome/title.html'
+    })
+
+    $locationProvider.html5Mode(true);
+}]);
+
 app.controller('AppCtrl', ['$scope', '$mdSidenav', '$mdDialog', '$http', function($scope, $mdSidenav, $mdDialog, $http) {
     $scope.title = "Cappuccino";
 
@@ -37,7 +46,7 @@ app.controller('AppCtrl', ['$scope', '$mdSidenav', '$mdDialog', '$http', functio
     $scope.requestAuthenticate = function() {
         $mdDialog.show({
             parent: angular.element(document.body),
-            templateUrl: 'templates/authenticate/authenticate.dialog.html',
+            templateUrl: '/templates/authenticate/authenticate.dialog.html',
             controller: 'AuthenticateCtrl',
             onRemoving: $scope.getUserProfile
         });
@@ -75,15 +84,15 @@ app.controller('AppCtrl', ['$scope', '$mdSidenav', '$mdDialog', '$http', functio
 app.controller('AuthenticateCtrl', ['$scope', '$mdDialog', '$http', function($scope, $mdDialog, $http) {
 
     $scope.authenticate = function() {
-        $scope.pending = true;
+        $scope.loading = true;
         $http.post('/auth/login', $scope.user)
             .success(function(data, status, headers, config) {
-                $scope.pending = false;
+                $scope.loading = false;
                 $mdDialog.hide();
             })
             .error(function(data, status, headers, config) {
                 $scope.errText = data.message;
-                $scope.pending = false;
+                $scope.loading = false;
                 $scope.user.password = '';
             })
     }

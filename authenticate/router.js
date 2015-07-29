@@ -43,7 +43,7 @@ module.exports = function() {
     router.all('/logout', function(req, res, next) {
         req.session.isAuthenticate = false;
         req.session.destroy(function(err) {
-            if (err) return next(Error("Can't destroy session"));
+            if (err) return next(err);
             res.send('ok');
         });
     });
