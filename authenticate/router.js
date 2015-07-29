@@ -1,4 +1,6 @@
 var router = require('express').Router();
+
+
 module.exports = function() {
 
     router.all('/', function(req, res, next) {
@@ -12,19 +14,22 @@ module.exports = function() {
 
     router.post('/login', function(req, res, next) {
         var users = req.db.collection('users');
-        users.findOne({
-            _id: req.body.username
-        }, function(err, user) {
+        var query = {
+            "_id": req.body.username
+        }
+        users.findOne(query, function(err, user) {
             if (err) return next(err);
+
             if (user) {
                 if (user.password === req.body.password) {
-                    var obj = {
+                    var sessionObject = {
                         _id: user._id,
                         name: user.name,
                         roles: user.roles
                     }
-                    req.session.user = obj;
-                    return res.json(obj);
+                    req.session.user = sessionObject;
+                    req.session.isAuthenticate = true;
+                    return res.json(sessionObject);
                 } else {
                     return next(Error('Password incorrect'));
                 }
@@ -36,6 +41,7 @@ module.exports = function() {
     });
 
     router.all('/logout', function(req, res, next) {
+        req.session.isAuthenticate = false;
         req.session.destroy(function(err) {
             if (err) return next(Error("Can't destroy session"));
             res.send('ok');
@@ -44,3 +50,34 @@ module.exports = function() {
 
     return router;
 };
+
+module.exports.auth = function(roles) {
+    return function(req, res, next) {
+        if (req.session.isAuthenticate) {
+            var users = req.db.collection('users');
+            if (!Array.isArray(roles)) {
+                roles = [roles]
+            }
+            var query = {
+                "_id":req.session.user._id,
+                "roles":{"$all":roles}
+            }
+            console.log(query);
+            users.findOne(query,function(err,user){
+                if(err)return next(err);
+
+                if(user){
+                    console.log(user)
+                    next();
+                } else {
+                    res.status(401)
+                    next(Error("Unauthorize role"));
+                }
+            })
+        } else {
+            res.status(401);
+            next(Error("Unauthorize"));
+        }
+    }
+
+}

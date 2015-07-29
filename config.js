@@ -33,5 +33,6 @@ exports.session = {
 //Router application
 exports.applications = [
 	{name:'Cappuccino Art',require:'./cappuccino-art',path:'/'},
-	{name:'Authenticate',require:'./authenticate',path:'/auth'}
+	{name:'Authenticate',require:'./authenticate',path:'/auth'},
+    {name:'Contacts',require:'./contacts',path:'/contacts'}
 ]
