@@ -38,12 +38,15 @@
                 </md-button>
                 <h1>{{title}}</h1>
                 <span flex></span>
+                <md-input-container ng-show="searchInput">
+                    <input type="search">
+                </md-input-container>
             </div>
         </md-toolbar>
-        <div class="view-container" flex>
+        <md-content class="view-container" flex md-scroll-y>
             <div ng-view class="view">
             </div>
-        </div>
+        </md-content>
     </div>
     <!-- Angular Material Dependencies -->
     <script src="/l/angular/angular.min.js"></script>

@@ -6,15 +6,15 @@
             <div ng-show="!!errText" style="color:red;">{{errText}}</div>
             <md-input-container style="margin-top:24px">
                 <label>Username</label>
-                <input type="text" ng-model="user.username">
+                <input type="text" ng-model="user.username" tabindex="1">
             </md-input-container>
             <md-input-container>
                 <label>Password</label>
-                <input type="password" ng-model="user.password">
+                <input type="password" ng-model="user.password" tabindex="2">
             </md-input-container>
         </md-dialog-content>
         <div class="md-actions" layout="row">
-            <md-button class="md-primary">Next</md-button>
+            <md-button class="md-primary" tabinndex="3">Next</md-button>
         </div>
     </form>
 </md-dialog>

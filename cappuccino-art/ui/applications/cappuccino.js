@@ -1,4 +1,4 @@
-var app = angular.module('Cappuccino', ['ngMaterial','ngRoute']);
+var app = angular.module('Cappuccino', ['ngMaterial', 'ngRoute']);
 
 app.config(function($mdThemingProvider) {
     $mdThemingProvider.theme("default")
@@ -25,13 +25,17 @@ app.config(function($mdIconProvider) {
         .iconSet("toggle", "l/material-design-icons/sprites/svg-sprite/svg-sprite-toggle.svg")
 });
 
-app.config(['$routeProvider','$locationProvider',function($routeProvider,$locationProvider){
+app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
-    .when('/',{
-        templateUrl: '/templates/welcome/title.html'
-    })
+        .when('/', {
+            templateUrl: '/templates/welcome/title.html'
+        })
+        .when('/contacts', {
+            templateUrl: '/templates/contacts/contacts.list.html',
+            controller: 'ContactsCtrl'
+        })
 
-    $locationProvider.html5Mode(true);
+    //$locationProvider.html5Mode(true);
 }]);
 
 app.controller('AppCtrl', ['$scope', '$mdSidenav', '$mdDialog', '$http', function($scope, $mdSidenav, $mdDialog, $http) {
@@ -51,8 +55,8 @@ app.controller('AppCtrl', ['$scope', '$mdSidenav', '$mdDialog', '$http', functio
             onRemoving: $scope.getUserProfile
         });
     };
-    $scope.getUserProfile = function(){
-    	$http.get('/auth')
+    $scope.getUserProfile = function() {
+        $http.get('/auth')
             .success(function(data, status, headers, config) {
                 $scope.user = data;
             })
@@ -78,6 +82,9 @@ app.controller('AppCtrl', ['$scope', '$mdSidenav', '$mdDialog', '$http', functio
             })
     }
 
+    $scope.showSearch = function(){
+        $scope.searchInput = true;
+    }
     angular.element(document).ready($scope.getUserProfile);
 }]);
 
@@ -98,3 +105,32 @@ app.controller('AuthenticateCtrl', ['$scope', '$mdDialog', '$http', function($sc
     }
 
 }]);
+
+app.controller('ContactsCtrl', ['$scope', function($scope) {
+    $scope.setTitle('Contacts');
+
+    $scope.search = function(key){
+        $scepe.setTitle(key);
+    }
+
+    $scope.test = function(){
+        $scope.showSearch();
+    }
+    list = [{
+        name: "Wacharabuhm Tungketmukda",
+        tel: "0840026425",
+        email: "n.kimmy@gmail.com"
+    }, {
+        name: "วัชรภูมิ ตั้งเกษมุกดา",
+        tel: "0881111111",
+        email: "kimskw@hotmail.com"
+    }];
+    for (var i = 100; i >= 0; i--) {
+        var obj = {
+            name: "Boby haha"+(Math.random().toFixed(2)),
+            tel: Math.random().toFixed(8),
+        }
+        list.push(obj);
+    };
+    $scope.contacts = list;
+}])
