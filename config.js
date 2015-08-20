@@ -6,25 +6,17 @@ module.exports = {
     },
 
     http: {
-        enabled: true,
+        enabled: false,
         port: 3000
     },
 
     https: {
         enabled: true,
-        port: 3002,
+        port: 3001,
         options: {
             key: fs.readFileSync('./keys/cappuccino-key.pem'),
             cert: fs.readFileSync('./keys/cappuccino-cert.pem')
         }
-    },
-
-    csurf: {
-        enabled: false,
-        options: {
-            cookie: true,
-        }
-
     },
 
     session: {
@@ -33,6 +25,9 @@ module.exports = {
         saveUninitialized: true,
         storeConfig: {
             db: 'cappuccino'
+        },
+        cookie: {
+            secure: true
         }
     },
 
