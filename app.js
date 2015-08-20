@@ -12,25 +12,29 @@ MongoClient.connect(config.database.url, function(err, db) {
 
     var app = Express();
 
+    app.locals.db = db;
+
+    app.use(require('morgan')(config.logger.format));
     app.use(require('cookie-parser')());
-    app.use(require('csurf')(config.csurf));
-    app.use(config.csurf.cookieInjection);
+
 
     config.session.store = new MongoStore(config.session.storeConfig);
     app.use(session(config.session));
-
-    app.use(function(req, res, next) {
-        req.db = db;
-        next();
-    });
-
+    if (config.csurf.enabled) {
+        app.use(require('csurf')(config.csurf.options));
+        app.use(function(req, res, next) {
+            res.cookie(config.csurf.token, req.csrfToken());
+            next();
+        });
+    }
     var bodyParser = require('body-parser');
+    app.use(bodyParser.urlencoded({
+        extended: true
+    }));
     app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: false }));
-    
+
     config.applications.map(function(appData) {
         var router = require(appData.require)();
-
         if (appData.path) {
             app.use(appData.path, router);
         } else {
@@ -38,17 +42,18 @@ MongoClient.connect(config.database.url, function(err, db) {
         }
     })
 
-    app.use(function(err,req,res,next){
+    app.use(function(err, req, res, next) {
         if (res.statusCode === 200) {
             res.status(500);
         }
-        
+
         res.json({
-            error:err.name,
+            error: err.name,
             message: err.message,
             timestamp: new Date().getTime()
         })
     })
+
     if (config.http.enabled) {
         http.createServer(app).listen(config.http.port, function() {
             console.log('Cappuccino server @%s', config.http.port);
