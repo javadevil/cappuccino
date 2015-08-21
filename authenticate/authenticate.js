@@ -12,7 +12,6 @@ module.exports = {
             return next(Error("Unauthorize"));
         }
     },
-
     login: function(req, res, next) {
         'use strict';
         if (req.body.username && req.body.password) {
