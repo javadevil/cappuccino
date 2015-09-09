@@ -1,8 +1,8 @@
 {
-  "name": "authenticate",
+  "name": "cappuccino-authenticate",
   "version": "1.0.0",
   "description": "Authenticate app for cappuccino",
-  "main": "router.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

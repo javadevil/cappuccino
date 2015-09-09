@@ -1,32 +1,22 @@
 module.exports = function(roles) {
     return function(req, res, next) {
         if (req.session.user) {
-        	
             switch (typeof(roles)) {
                 case "undefined":
                     return next();
                 case "string":
                     roles = [roles];
                 case "object":
-                	var query = {
-                		"_id": req.session.user._id,
-                        "roles": {
-                            "$all": roles
+                    var user = req.session.user;
+                    if (Array.isArray(user.roles)) {
+                        for (var i = roles.length - 1; i >= 0; i--) {
+                            if (user.roles.indexOf(roles[i]) >= 0) return next();
                         }
-                	}
-                	var users = req.app.locals.db.collection("users");
-            		users.findOne(query,function(err,user){
-            			if (err) return next(err);
-            			console.log(user);
-            			if(user) return next();
-
-            			res.status(401);
-            			return res.end();
-            		});
+                    };
+                    return res.status(401).end();
             }
         } else {
-            res.status(401);
-            return res.end();
+            return res.status(401).end();
         }
     };
 }

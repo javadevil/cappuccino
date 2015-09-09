@@ -1,67 +1,85 @@
-var config = require('./config.js');
+var settings = require('./settings.json');
 var MongoClient = require('mongodb');
-var Express = require('express');
-var session = require('express-session');
-var bodyParser = require('body-parser');
-var MongoStore = require('connect-mongo')(session);
+var app = require('express')();
 
-var http = require('http');
-var https = require('https');
+MongoClient.connect(settings.database.url, applicationInit);
 
-var app = Express();
-MongoClient.connect(config.database.url, function(err, db) {
-    if (err) return console.error(err);
+function applicationInit(err, database) {
+    if (err) {
+        return console.error(err);
+    }
 
-    //Database register
-    app.locals.db = db;
+    app.use(initLogger());
+    app.use(initSession());
+    app.use(initBodyParser());
+    app.use(initAppModule());
+    app.use(initErrorHandler());
 
-    //Logger 
-    app.use(require('morgan')(config.logger.format));
+    initServer(app);
+}
 
-    //Session 
-    config.session.store = new MongoStore(config.session.storeConfig);
-    app.use(session(config.session));
+function initLogger() {
+    var Logger = require('morgan');
+    console.log('Logger: %s', settings.logger.format);
+    return Logger(settings.logger.format);
+}
 
-    //Body parser
-    app.use(bodyParser.urlencoded({
-        extended: true
-    }));
-    app.use(bodyParser.json());
+function initSession() {
+    console.log('Session initialized');
+    var Session = require('express-session');
+    var MongoStore = require('connect-mongo')(Session);
+    settings.session.store = new MongoStore(settings.session.storeConfig);
+    return Session(settings.session);
+}
 
-    //Application loader
-    config.applications.map(function(application) {
-        var router = require(application.require)();
-        if (application.path) {
-            app.use(application.path, router);
-            console.log(application.name, 'Loaded');
-        } else {
-            app.use(router);
+function initBodyParser() {
+    console.log('Body parser initialized');
+    var BodyParser = require('body-parser');
+    var urlencodedOptions = {
+        'extended': true
+    }
+    return [BodyParser.json(), BodyParser.urlencoded(urlencodedOptions)];
+}
+
+function initAppModule() {
+    var modules = [];
+    for (var i = settings.appModule.length - 1; i >= 0; i--) {
+        var module = settings.appModule[i];
+        if (module.path) {
+            console.log('AppModule initialized: %s', module.moduleName || module.path);
+            var Module = require(module.path);
+            modules.push(Module());
         }
-    })
+    };
+    return modules;
+}
 
-    //Error handler
-    app.use(function(err, req, res, next) {
-        if (res.statusCode === 200) {
-            res.status(500);
-        }
+function initErrorHandler() {
+    return function errorHandler(err, req, res, next) {
+        res.status(500).end();
+        console.error(err);
+    }
+}
 
-        res.json({
-            error: err.name,
-            message: err.message,
-            timestamp: new Date().getTime()
-        })
-    })
-
-    //HTTP
-    if (config.http.enabled) {
-        http.createServer(app).listen(config.http.port, function() {
-            console.log('Cappuccino HTTP port', config.http.port, 'started');
+function initServer(app) {
+    if (settings.http.enabled) {
+        var http = require('http');
+        var port = settings.http.port || 3000;
+        http.createServer(app).listen(port, function httpSuccess() {
+            console.log('Http server port: %s', port);
         });
     }
-    //HTTPS
-    if (config.https.enabled) {
-        https.createServer(config.https.options, app).listen(config.https.port, function() {
-            console.log('Cappuccino HTTPS port', config.https.port, 'started');
+
+    if (settings.https.enabled) {
+        var https = require('https');
+        var fs = require('fs');
+        var port = settings.https.port || 3001;
+        var sslOptions = {
+            key: fs.readFileSync(settings.https.ssl.key),
+            cert: fs.readFileSync(settings.https.ssl.cert)
+        }
+        https.createServer(sslOptions, app).listen(port, function httpsSuccess() {
+            console.log('Https server port: %s', port);
         });
     }
-})
+}

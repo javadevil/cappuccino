@@ -22,7 +22,7 @@ module.exports = {
     session: {
         secret: 'cfdf=fiuc*o^uah_#6%+k-dzvc@17966e2!)6_*v19w0hh^i$8x3',
         resave: false,
-        saveUninitialized: true,
+        saveUninitialized: false,
         storeConfig: {
             db: 'cappuccino'
         },
@@ -36,17 +36,21 @@ module.exports = {
         format: 'dev'
     },
     
-    applications: [{
-        name: 'Cappuccino Art',
-        require: './cappuccino-art',
-        path: '/'
-    }, {
+    applications: [
+    // {
+    //     name: 'Cappuccino Art',
+    //     require: './cappuccino-art',
+    //     path: '/'
+    // },
+    {
         name: 'Authenticate',
         require: './authenticate',
         path: '/auth'
-    }, {
-        name: 'Contacts',
-        require: './contacts',
-        path: '/contacts'
-    }]
+    },
+    // {
+    //     name: 'Contacts',
+    //     require: './contacts',
+    //     path: '/contacts'
+    // }
+    ]
 }

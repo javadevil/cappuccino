@@ -1,10 +1,11 @@
 {
-  "name": "cappuccino",
+  "name": "express-cappuccino",
   "version": "1.0.0",
   "description": "Cappuccino business intelligent software",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon -i cappuccino-art/ .",
+    "start": "pm2 start ./ -i 1 --no-daemon --watch --name 'cappuccino'",
+    "stop": "pm2 stop 'cappuccino'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,15 +19,11 @@
   },
   "homepage": "https://github.com/javadevil/cappuccino#readme",
   "dependencies": {
-    "bcrypt": "^0.8.4",
     "body-parser": "^1.13.2",
     "connect-mongo": "^0.8.2",
-    "cookie-parser": "^1.3.5",
-    "csurf": "^1.8.3",
     "express": "^4.13.1",
     "express-session": "^1.11.3",
     "mongodb": "^2.0.39",
-    "morgan": "^1.6.1",
-    "serve-static": "^1.10.0"
+    "morgan": "^1.6.1"
   }
 }

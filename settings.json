@@ -1,0 +1,40 @@
+{
+    "database": {
+        "url": "mongodb://localhost/cappuccino"
+    },
+
+    "http": {
+        "enabled": true,
+        "port": 3000
+    },
+
+    "https": {
+        "enabled": true,
+        "port": 3001,
+        "ssl": {
+            "key": "./keys/cappuccino-key.pem",
+            "cert": "./keys/cappuccino-cert.pem"
+        }
+    },
+
+    "session": {
+        "secret": "cfdf=fiuc*o^uah_#6%+k-dzvc@17966e2!)6_*v19w0hh^i$8x3",
+        "resave": false,
+        "saveUninitialized": false,
+        "storeConfig": {
+            "db": "cappuccino"
+        },
+        "cookie": {
+            "secure": true
+        }
+    },
+
+    "logger": {
+        "format": "dev"
+    },
+
+    "appModule": [{
+        "moduleName": "Authenticate",
+        "path": "./authenticate"
+    }]
+}
