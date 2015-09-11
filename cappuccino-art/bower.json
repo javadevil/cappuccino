@@ -1,0 +1,21 @@
+{
+  "name": "cappuccino-art",
+  "version": "0.0.0",
+  "homepage": "https://github.com/javadevil/cappuccino",
+  "authors": [
+    "Wacharabuhm Tungketmukda"
+  ],
+  "license": "GPL-3.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "iron-elements": "PolymerElements/iron-elements#~1.0.3",
+    "paper-elements": "PolymerElements/paper-elements#~1.0.5",
+    "polymer": "Polymer/polymer#^1.0.0"
+  }
+}

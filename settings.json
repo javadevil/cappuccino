@@ -2,12 +2,6 @@
     "database": {
         "url": "mongodb://localhost/cappuccino"
     },
-
-    "http": {
-        "enabled": true,
-        "port": 3000
-    },
-
     "https": {
         "enabled": true,
         "port": 3001,
@@ -36,5 +30,8 @@
     "appModule": [{
         "moduleName": "Authenticate",
         "path": "./authenticate"
+    },{
+        "moduleName": "cappuccino-art",
+        "path": "./cappuccino-art"
     }]
 }

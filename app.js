@@ -12,6 +12,7 @@ function applicationInit(err, database) {
     app.use(initLogger());
     app.use(initSession());
     app.use(initBodyParser());
+    app.use(initDatabase(database));
     app.use(initAppModule());
     app.use(initErrorHandler());
 
@@ -41,6 +42,13 @@ function initBodyParser() {
     return [BodyParser.json(), BodyParser.urlencoded(urlencodedOptions)];
 }
 
+function initDatabase (database) {
+    return function databaseInjector(req,res,next){
+        req.db = database;
+        next();
+    }
+}
+
 function initAppModule() {
     var modules = [];
     for (var i = settings.appModule.length - 1; i >= 0; i--) {
@@ -58,18 +66,11 @@ function initErrorHandler() {
     return function errorHandler(err, req, res, next) {
         res.status(500).end();
         console.error(err);
+        next();
     }
 }
 
 function initServer(app) {
-    if (settings.http.enabled) {
-        var http = require('http');
-        var port = settings.http.port || 3000;
-        http.createServer(app).listen(port, function httpSuccess() {
-            console.log('Http server port: %s', port);
-        });
-    }
-
     if (settings.https.enabled) {
         var https = require('https');
         var fs = require('fs');

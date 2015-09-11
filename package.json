@@ -4,7 +4,8 @@
   "description": "Cappuccino business intelligent software",
   "main": "app.js",
   "scripts": {
-    "start": "pm2 start ./ -i 1 --no-daemon --watch --name 'cappuccino'",
+    "start": "pm2-dev start ./pm2.json",
+    "restart": "pm2 restart ./pm2.json",
     "stop": "pm2 stop 'cappuccino'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,7 +14,7 @@
     "url": "git+https://github.com/javadevil/cappuccino.git"
   },
   "author": "Wacharabuhm Tungketmukda",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/javadevil/cappuccino/issues"
   },

@@ -1,0 +1,9 @@
+[{
+  "script"    : "app.js",
+  "name"      : "cappuccino",
+  "exec_mode" : "cluster",
+  "instances" : -1,  // number of CPUs -1
+  "watch"	  : false,
+  "ignore_watch": ["node_modules","key","cappuccino-art"],
+  "auto_restart":false
+}]
