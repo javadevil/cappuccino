@@ -1,9 +1,16 @@
 {
   "name": "cappuccino-art",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "homepage": "https://github.com/javadevil/cappuccino",
   "authors": [
-    "Wacharabuhm Tungketmukda"
+    "javadevil"
+  ],
+  "main": "index.html",
+  "keywords": [
+    "Cappuccino",
+    "UI",
+    "Angular",
+    "Material"
   ],
   "license": "GPL-3.0",
   "ignore": [
@@ -14,8 +21,8 @@
     "tests"
   ],
   "dependencies": {
-    "iron-elements": "PolymerElements/iron-elements#~1.0.3",
-    "paper-elements": "PolymerElements/paper-elements#~1.0.5",
-    "polymer": "Polymer/polymer#^1.0.0"
+    "angular": "~1.4.5",
+    "angular-material": "~0.11.0",
+    "material-design-icons": "~2.0.0"
   }
 }
